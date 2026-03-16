@@ -17,6 +17,11 @@ class Student(BaseModel):
     cgpa : float
     test : int
 
+class UpdateStudent(BaseModel):
+    sname: Optional[str] = None
+    cgpa: Optional[float] = None
+    test: Optional[int] = None
+
 
 # first app
 @app.get('/')
@@ -44,3 +49,22 @@ def new_student(student_id : int, student : Student):
     
     students[student_id] = student
     return students[student_id]
+
+# put method
+@app.put("/update-student/{student_id}")
+def update_student(student_id: int, student: UpdateStudent):
+    if student_id not in students:
+        return {"Error": "Student not found"}
+
+    if student.sname is not None:
+        students[student_id].sname = student.sname
+
+    if student.cgpa is not None:
+        students[student_id].cgpa = student.cgpa
+
+    if student.test is not None:
+        students[student_id].test = student.test
+
+    return students[student_id]
+    
+
